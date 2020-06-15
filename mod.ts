@@ -1,4 +1,5 @@
 import { Application, send } from "https://deno.land/x/oak@v4.0.0/mod.ts";
+import api from './api.ts';
 
 const app = new Application();
 const port: number = 3333;
@@ -13,9 +14,12 @@ app.use(async (ctx, next) => {
   const start = Date.now();
   await next();
   const delta = Date.now() - start;
-
+  
   ctx.response.headers.set('X-Response-Time', `${delta}ms`);
 });
+
+app.use(api.routes());
+app.use(api.allowedMethods());
 
 app.use(async (ctx) => {
   const filePath = ctx.request.url.pathname;
