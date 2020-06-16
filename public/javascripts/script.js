@@ -1,3 +1,4 @@
+// @ts-nocheck
 let launches;
 
 const numberHeading = "No.".padStart(5);
@@ -33,18 +34,15 @@ function loadLaunches() {
 
 function loadPlanets() {
   // TODO: Once API is ready.
-  const planets = [
-    {
-      kepler_name: 'Fake Planet 1',
-    },
-    {
-      kepler_name: 'Fake Planet 2',
-    }
-  ];
-  const planetSelector = document.getElementById("planets-selector");
-  planets.forEach((planet) => {
-    planetSelector.innerHTML += `<option value="${planet.kepler_name}">${planet.kepler_name}</option>`;
-  });
+  return fetch('/planets')
+    .then(data => data.json())
+    .then(planets => {
+      const planetSelector = document.getElementById("planets-selector");
+      planets.forEach((planet) => {
+        planetSelector.innerHTML += `<option value="${planet.kepler_name}">${planet.kepler_name}</option>`;
+      });
+    })
+    .catch(e => console.error('Error Loading Planets', e));
 }
 
 function abortLaunch() {
