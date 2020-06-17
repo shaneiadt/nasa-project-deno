@@ -17,6 +17,19 @@ await log.setup({
   }
 });
 
+app.addEventListener('error', (event) => {
+  log.error(event.error);
+});
+
+app.use(async (ctx, next) => {
+  try {
+    await next();
+  } catch (error) {
+    ctx.response.body = 'Internal Server Error';
+    throw error;
+  }
+});
+
 app.use(async (ctx, next) => {
   await next();
   const time = ctx.response.headers.get('X-Response-Time');
@@ -27,7 +40,7 @@ app.use(async (ctx, next) => {
   const start = Date.now();
   await next();
   const delta = Date.now() - start;
-  
+
   ctx.response.headers.set('X-Response-Time', `${delta}ms`);
 });
 
@@ -43,7 +56,7 @@ app.use(async (ctx) => {
     '/stylesheets/style.css'
   ];
 
-  if(fileWhiteList.includes(filePath)){
+  if (fileWhiteList.includes(filePath)) {
     await send(ctx, filePath, {
       root: `${Deno.cwd()}/public`,
     });
