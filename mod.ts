@@ -64,6 +64,6 @@ app.use(async (ctx) => {
 });
 
 if (import.meta.main) {
-  log.info(`Server running on: http://localhost:${port}`);
+  log.info(`Server running: http://localhost:${port}/index.html`);
   await app.listen({ port });
 }

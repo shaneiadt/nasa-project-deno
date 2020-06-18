@@ -46,8 +46,23 @@ function submitLaunch() {
   const rocket = document.getElementById("rocket-name").value;
   const flightNumber = launches[launches.length - 1].flightNumber + 1;
 
-  // TODO: Once API is ready.
-  // Submit above data to launch system and reload launches.
+  return fetch('/launches', {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      launchDate: Math.floor(launchDate / 1000),
+      target,
+      mission,
+      rocket,
+      flightNumber
+    })
+  })
+    .then(res => console.log(res))
+    .then(() => document.getElementById("launch-success").hidden = false)
+    .then(loadLaunches)
+    .catch(e => console.error('Error Submitting Launch', e));
 }
 
 function listUpcoming() {

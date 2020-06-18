@@ -56,3 +56,5 @@ await downloadLaunchData();
 export const getAll = () => Array.from(launches.values());
 
 export const getById = (id: number) => launches.has(id) ? launches.get(id) : null;
+
+export const addOne = (launch: Launch) => launches.set(launch.flightNumber, { ...launch, upcoming: true, customers: ['ZTM', 'NASA'] });
