@@ -15,25 +15,14 @@ function initValues() {
   launchDaySelector.setAttribute("value", today);
 }
 
-function loadLaunches() {
-  // TODO: Once API is ready.
-  // Load launches and sort by flight number.
-  launches = [
-    {
-      launchDate: new Date((new Date()).getTime() + (10 * 86400000)),
-      kepler_name: 'Kepler 435 D',
-      mission: 'DEMO LAUNCH',
-      rocket: 'ZTM DEMO',
-      target: 'Mars',
-      flightNumber: 1,
-      customers: ['ME'],
-      upcoming: true
-    }
-  ];
+async function loadLaunches() {
+  return fetch('/launches')
+    .then(data => data.json())
+    .then(payload => launches = payload.sort((a, b) => a.flightNumber < b.flightNumber))
+    .catch(e => console.error('Error Loading Lanuches', e));
 }
 
 function loadPlanets() {
-  // TODO: Once API is ready.
   return fetch('/planets')
     .then(data => data.json())
     .then(planets => {
@@ -92,7 +81,7 @@ function listHistory() {
     });
 }
 
-function navigate(navigateTo) {
+async function navigate(navigateTo) {
   const pages = ["history", "upcoming", "launch"];
   document.getElementById(navigateTo).hidden = false;
   pages.filter((page) => page !== navigateTo).forEach((page) => {
@@ -101,10 +90,10 @@ function navigate(navigateTo) {
   document.getElementById("launch-success").hidden = true;
 
   if (navigateTo === "upcoming") {
-    loadLaunches();
+    await loadLaunches();
     listUpcoming();
   } else if (navigateTo === "history") {
-    loadLaunches();
+    await loadLaunches();
     listHistory();
   }
 }
