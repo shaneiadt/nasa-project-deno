@@ -53,7 +53,8 @@ app.use(async (ctx) => {
     '/index.html',
     '/javascripts/script.js',
     '/images/favicon.png',
-    '/stylesheets/style.css'
+    '/stylesheets/style.css',
+    '/videos/background.mp4',
   ];
 
   if (fileWhiteList.includes(filePath)) {

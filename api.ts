@@ -33,4 +33,12 @@ router.post('/launches', async (ctx) => {
   ctx.response.status = 201;
 });
 
+router.delete('/launches/:id', async (ctx) => {
+  if (ctx.params?.id) {
+    ctx.response.body = { success: launches.removeOne(Number(ctx.params.id)) };
+  } else {
+    ctx.throw(404, "Launch Doe Not Exist");
+  }
+});
+
 export default router;
