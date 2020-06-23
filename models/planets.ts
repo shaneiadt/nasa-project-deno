@@ -1,7 +1,4 @@
-import { BufReader } from 'https://deno.land/std/io/bufio.ts';
-import { join } from 'https://deno.land/std/path/mod.ts';
-import { parse } from 'https://deno.land/std/encoding/csv.ts';
-import * as _ from 'https://raw.githubusercontent.com/lodash/lodash/4.17.15-es/lodash.js';
+import { BufReader, join, parse, pick } from '../deps.ts';
 
 interface Planet {
   [key: string]: string | number;
@@ -33,7 +30,7 @@ async function loadPlanetsData() {
 
   const planets: Planet[] = filterHabitablePlanets(result);
 
-  return planets.map(planet => _.pick(planet, ['koi_prad', 'koi_smass', 'koi_srad', 'kepler_name', 'koi_count', 'koi_steff', 'koi_period']));
+  return planets.map(planet => pick(planet, ['koi_prad', 'koi_smass', 'koi_srad', 'kepler_name', 'koi_count', 'koi_steff', 'koi_period']));
 }
 
 const orbitalPeriod = (v: number = 0) => {

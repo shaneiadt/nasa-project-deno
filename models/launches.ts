@@ -1,5 +1,4 @@
-import * as log from "https://deno.land/std/log/mod.ts";
-import _ from "https://deno.land/x/deno_lodash/mod.ts";
+import { flatMap, log } from '../deps.ts';
 
 await log.setup({
   handlers: {
@@ -32,7 +31,7 @@ async function downloadLaunchData() {
   const data = await response.json();
 
   for (const launch of data) {
-    const customers = _.flatMap(launch['rocket']['second_stage']['payloads'],
+    const customers = flatMap(launch['rocket']['second_stage']['payloads'],
       (payload: { customers: [] }) => payload.customers);
 
     const flightData = {
